@@ -3,82 +3,74 @@
   <h3 class="text-lg font-medium mb-4">Billetes</h3>
 
   @if (currencyTracker.availableDenominations().length !== 0) {
+    <p-inputgroup>
+      <p-dropdown
+        [options]="denominationOptions"
+        [(ngModel)]="selectedDenomination"
+        [disabled]="currencyTracker.availableDenominations().length === 0"
+        placeholder="Denominación"
+        optionLabel="label"
+        optionValue="value"
+        styleClass="min-w-[55%]"
+        appendTo="body"
+        panelStyleClass="min-w-[150px]"
+      />
 
-  <p-inputgroup>
-    <p-dropdown
-      [options]="denominationOptions"
-      [(ngModel)]="selectedDenomination"
-      [disabled]="currencyTracker.availableDenominations().length === 0"
-      placeholder="Denominación"
-      optionLabel="label"
-      optionValue="value"
-      styleClass="min-w-[55%]"
-      appendTo="body"
-      panelStyleClass="min-w-[150px]"
-    />
+      <p-inputNumber [(ngModel)]="billCount" [min]="1" [disabled]="selectedDenomination === 0" placeholder="cantidad" />
 
-    <p-inputNumber
-      [(ngModel)]="billCount"
-      [min]="1"
-      [disabled]="selectedDenomination === 0"
-      placeholder="cantidad"
-    />
-
-    <p-inputgroup-addon>
-      <div class="flex h-full items-stretch">
-        <p-button
-          (onClick)="addBills()"
-          [disabled]="selectedDenomination === 0 || (billCount || 0) < 1"
-        >
-          <i class="pi pi-plus"></i>
-        </p-button>
-      </div>
-    </p-inputgroup-addon>
-  </p-inputgroup>
-
+      <p-inputgroup-addon>
+        <div class="flex h-full items-stretch">
+          <p-button (onClick)="addBills()" [disabled]="selectedDenomination === 0 || (billCount || 0) < 1">
+            <i class="pi pi-plus"></i>
+          </p-button>
+        </div>
+      </p-inputgroup-addon>
+    </p-inputgroup>
   }
 
   <div class="mt-5">
     @for (bill of currencyTracker.bills(); track bill.denomination) {
+      <div class="flex items-center gap-2 py-2">
+        <div class="w-16 shrink-0">
+          <span class="text-lg font-semibold">${{ bill.denomination }}</span>
+        </div>
 
-    <div class="flex items-center gap-2 py-2">
-      <div class="w-16 shrink-0">
-        <span class="text-lg font-semibold">${{ bill.denomination }}</span>
+        <p-inputNumber
+          [ngModel]="bill.count"
+          [min]="0"
+          (onInput)="updateBillCount(bill.denomination, +($event.value || 0))"
+          [showButtons]="false"
+          inputStyleClass="w-full"
+          buttonLayout="horizontal"
+          [showButtons]="true"
+          spinnerMode="horizontal"
+          styleClass="w-full"
+        />
+
+        <p-button severity="danger" styleClass="flex" (onClick)="removeBillType(bill.denomination)">
+          <i class="pi pi-trash h-[22px] pt-0.5"></i>
+        </p-button>
       </div>
-
-      <p-inputNumber
-        [ngModel]="bill.count"
-        [min]="0"
-        (onInput)="updateBillCount(bill.denomination, +($event.value || 0))"
-        [showButtons]="false"
-        inputStyleClass="w-full"
-        buttonLayout="horizontal"
-        [showButtons]="true"
-        spinnerMode="horizontal"
-        styleClass="w-full"
-      />
-    </div>
-
     } @empty {
-    <div class="text-center py-8 text-gray-500">
-      <i class="pi pi-money-bill text-4xl mb-2"></i>
-      <p>Todavía no agregaste nada.</p>
-    </div>
+      <div class="text-center py-8 text-gray-500">
+        <i class="pi pi-money-bill text-4xl mb-2"></i>
+        <p>Todavía no agregaste nada.</p>
+      </div>
     }
 
     <!-- actions -->
     <div class="actions">
       @if (currencyTracker.bills().length > 0) {
-      <div class="flex justify-end mt-4">
-        <p-button
-          label="Clear All Bills"
-          icon="pi pi-trash"
-          severity="danger"
-          size="small"
-          (onClick)="clearAllBills()"
-          [outlined]="true"
-        />
-      </div>
+        <div class="flex justify-end mt-4">
+          <p-button
+            label="Borrar todo el efectivo"
+            icon="pi pi-trash"
+            severity="danger"
+            size="small"
+            (onClick)="clearAllBills()"
+            [outlined]="true"
+          />
+        </div>
       }
     </div>
   </div>

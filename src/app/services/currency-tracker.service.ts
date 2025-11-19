@@ -83,20 +83,13 @@ export class CurrencyTrackerService {
     const currentBills = [...this.billsSignal()];
     const existingBillIndex = currentBills.findIndex(bill => bill.denomination === denomination);
 
-    if (count === 0) {
-      // Remove bill type if count is 0
-      if (existingBillIndex !== -1) {
-        currentBills.splice(existingBillIndex, 1);
-      }
+    // Add or update bill type (0 is now a valid count)
+    if (existingBillIndex !== -1) {
+      currentBills[existingBillIndex].count = count;
     } else {
-      // Add or update bill type
-      if (existingBillIndex !== -1) {
-        currentBills[existingBillIndex].count = count;
-      } else {
-        currentBills.push({ denomination, count });
-        // Sort bills by denomination for consistent display
-        currentBills.sort((a, b) => a.denomination - b.denomination);
-      }
+      currentBills.push({ denomination, count });
+      // Sort bills by denomination for consistent display
+      currentBills.sort((a, b) => a.denomination - b.denomination);
     }
 
     this.billsSignal.set(currentBills);
@@ -109,6 +102,16 @@ export class CurrencyTrackerService {
   public getBillCount(denomination: number): number {
     const bill = this.billsSignal().find(b => b.denomination === denomination);
     return bill ? bill.count : 0;
+  }
+
+  /**
+   * Remove a bill type completely from the list
+   */
+  public removeBillType(denomination: number): void {
+    const currentBills = [...this.billsSignal()];
+    const filteredBills = currentBills.filter(bill => bill.denomination !== denomination);
+    this.billsSignal.set(filteredBills);
+    this.saveToStorage();
   }
 
   /**

@@ -89,7 +89,7 @@ export class CashAccordionComponent {
   }
 
   removeBillType(denomination: number): void {
-    this.currencyTracker.updateBillCount(denomination, 0);
+    this.currencyTracker.removeBillType(denomination);
   }
 
   clearAllBills(): void {
