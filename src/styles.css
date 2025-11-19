@@ -8,6 +8,5 @@ html {
     background-color: var(--p-surface-950);
   }
 
-  scrollbar-gutter: stable;
   scrollbar-width: thin;
 }

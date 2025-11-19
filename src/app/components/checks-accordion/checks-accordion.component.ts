@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'primeng/accordion';
+import { FieldsetModule } from 'primeng/fieldset';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,7 +15,7 @@ import { CurrencyTrackerService, Check } from '../../services/currency-tracker.s
   imports: [
     CommonModule,
     FormsModule,
-    AccordionModule,
+    FieldsetModule,
     ButtonModule,
     InputNumberModule,
     InputTextModule,

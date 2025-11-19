@@ -1,13 +1,16 @@
-import { Component, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'primeng/accordion';
+import { FieldsetModule } from 'primeng/fieldset';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
-import { CurrencyTrackerService, BillType } from '../../services/currency-tracker.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CurrencyTrackerService } from '../../services/currency-tracker.service';
+import { AccordionModule } from 'primeng/accordion';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-cash-accordion',
@@ -15,15 +18,18 @@ import { CurrencyTrackerService, BillType } from '../../services/currency-tracke
   imports: [
     CommonModule,
     FormsModule,
-    AccordionModule,
+    FieldsetModule,
     ButtonModule,
     DropdownModule,
     InputNumberModule,
     CardModule,
-    ChipModule
+    ChipModule,
+    AccordionModule,
+    InputGroupModule,
+    InputGroupAddonModule,
   ],
   templateUrl: './cash-accordion.component.html',
-  styles: []
+  styles: [],
 })
 export class CashAccordionComponent {
   selectedDenomination: number = 0;
@@ -35,14 +41,20 @@ export class CashAccordionComponent {
   constructor(public currencyTracker: CurrencyTrackerService) {
     // Update denomination options when available denominations change
     effect(() => {
-      this.denominationOptions = this.currencyTracker.availableDenominations().map(denom => ({
-        label: `$${denom}`,
-        value: denom
-      }));
+      this.denominationOptions = this.currencyTracker
+        .availableDenominations()
+        .map((denom) => ({
+          label: `$${denom}`,
+          value: denom,
+        }));
 
       // Reset selected denomination if it's no longer available
-      if (this.selectedDenomination > 0 &&
-          !this.currencyTracker.availableDenominations().includes(this.selectedDenomination)) {
+      if (
+        this.selectedDenomination > 0 &&
+        !this.currencyTracker
+          .availableDenominations()
+          .includes(this.selectedDenomination)
+      ) {
         this.selectedDenomination = 0;
       }
     });
@@ -51,9 +63,14 @@ export class CashAccordionComponent {
   addBills(): void {
     if (this.selectedDenomination > 0 && (this.billCount || 0) >= 1) {
       try {
-        const currentCount = this.currencyTracker.getBillCount(this.selectedDenomination);
+        const currentCount = this.currencyTracker.getBillCount(
+          this.selectedDenomination
+        );
         const newCount = currentCount + (this.billCount || 0);
-        this.currencyTracker.updateBillCount(this.selectedDenomination, newCount);
+        this.currencyTracker.updateBillCount(
+          this.selectedDenomination,
+          newCount
+        );
 
         // Reset form
         this.resetBillForm();

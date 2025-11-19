@@ -1,0 +1,20 @@
+<p-accordion [value]="['0', '1', '2']" [multiple]="true">
+  <p-accordion-panel value="0" styleClass="">
+    <p-accordion-header>
+      <ng-template #toggleicon let-active="active">
+        @if (active) {
+        <i class="pi pi-minus"></i>
+        } @else {
+        <i class="pi pi-plus"></i>
+        }
+      </ng-template>
+
+      <div class="font-bold tracking-wide">
+        <span class="flex items-center gap-2 w-full font-mono"> Efectivo</span>
+      </div>
+    </p-accordion-header>
+    <p-accordion-content>
+      <app-cash-accordion />
+    </p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
