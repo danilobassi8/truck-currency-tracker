@@ -136,6 +136,24 @@ export class CurrencyTrackerService {
   }
 
   /**
+   * Update the amount of an existing check
+   */
+  public updateCheckAmount(checkId: string, amount: number): void {
+    if (amount < 0) {
+      throw new Error('Check amount cannot be negative');
+    }
+
+    const currentChecks = [...this.checksSignal()];
+    const existingCheckIndex = currentChecks.findIndex(check => check.id === checkId);
+
+    if (existingCheckIndex !== -1) {
+      currentChecks[existingCheckIndex].amount = amount;
+      this.checksSignal.set(currentChecks);
+      this.saveToStorage();
+    }
+  }
+
+  /**
    * Remove a check by ID
    */
   public removeCheck(checkId: string): void {

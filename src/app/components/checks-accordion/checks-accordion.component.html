@@ -1,98 +1,47 @@
-<p-fieldset [toggleable]="true" styleClass="w-full">
-  <ng-template pTemplate="header">
-    <div class="flex justify-between items-center w-full">
-      <span class="font-semibold text-lg">Checks</span>
-    </div> </ng-template
-  >n class="w-full">
-  <div>
-    <ng-template pTemplate="header">
-      <div class="flex justify-between items-center w-full pr-4">
-        <span class="font-semibold text-lg">Checks</span>
-        <p-chip
-          [label]="'$' + currencyTracker.totalChecks()"
-          styleClass="bg-purple-100 text-purple-800"
-        />
+<!-- Add Checks Form -->
+<div class="mb-6 p-4 bg-gray-50 rounded-lg">
+  <p-inputgroup>
+    <p-inputNumber [(ngModel)]="checkAmount" placeholder="Monto del cheque" styleClass="min-w-[55%]" />
+
+    <p-inputgroup-addon>
+      <div class="flex h-full items-stretch">
+        <p-button (onClick)="addCheck()" [disabled]="(checkAmount || 0) <= 0">
+          <i class="pi pi-plus"></i>
+        </p-button>
       </div>
-    </ng-template>
+    </p-inputgroup-addon>
+  </p-inputgroup>
 
-    <!-- Add Check Form -->
-    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-      <h3 class="text-lg font-medium mb-4">Add Check</h3>
+  <div class="mt-5">
+    @for (check of currencyTracker.checks(); track check.id) {
+      <div class="flex items-center gap-2 py-2">
+        <div class="flex-1 p-3 bg-gray-100 rounded border text-lg font-semibold">${{ check.amount.toFixed(2) }}</div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <p-inputNumber
-          [(ngModel)]="checkAmount"
-          mode="currency"
-          currency="USD"
-          locale="en-US"
-          [min]="0.01"
-          placeholder="Check amount"
-          styleClass="w-full"
-        />
-
-        <p-inputText
-          [(ngModel)]="checkDescription"
-          placeholder="Description (optional)"
-          styleClass="w-full"
-        />
-
-        <p-button
-          label="Add Check"
-          icon="pi pi-plus"
-          (onClick)="addCheck()"
-          [disabled]="(checkAmount || 0) <= 0"
-          styleClass="w-full"
-        />
+        <p-button severity="danger" styleClass="flex" (onClick)="removeCheck(check.id)">
+          <i class="pi pi-trash h-[22px] pt-0.5"></i>
+        </p-button>
       </div>
-    </div>
-
-    <!-- Current Checks -->
-    <div class="space-y-4">
-      <h3 class="text-lg font-medium">Current Checks</h3>
-
-      @if (currencyTracker.checks().length === 0) {
+    } @empty {
       <div class="text-center py-8 text-gray-500">
         <i class="pi pi-file text-4xl mb-2"></i>
-        <p>No checks added yet</p>
+        <p>Todavía no agregaste nada.</p>
       </div>
-      } @for (check of currencyTracker.checks(); track check.id) {
-      <p-card styleClass="mb-3">
-        <div class="flex justify-between items-center">
-          <div class="flex-1">
-            <div class="space-y-1">
-              <div class="text-lg font-bold text-purple-600">
-                ${{ check.amount }}
-              </div>
-              @if (check.description) {
-              <div class="text-sm text-gray-600">
-                {{ check.description }}
-              </div>
-              }
-            </div>
-          </div>
-          <div class="flex items-center">
-            <p-button
-              icon="pi pi-trash"
-              severity="danger"
-              size="small"
-              (onClick)="removeCheck(check.id)"
-              [text]="true"
-            />
-          </div>
+    }
+
+    <!-- actions -->
+    <div class="actions">
+      @if (currencyTracker.checks().length > 0) {
+        <div class="flex justify-end mt-4">
+          <p-button
+            label="Borrar todos los cheques"
+            icon="pi pi-trash"
+            severity="danger"
+            size="small"
+            (onClick)="clearAllChecks()"
+            [outlined]="true"
+          />
         </div>
-      </p-card>
-      } @if (currencyTracker.checks().length > 0) {
-      <div class="flex justify-end mt-4">
-        <p-button
-          label="Clear All Checks"
-          icon="pi pi-trash"
-          severity="warn"
-          size="small"
-          (onClick)="clearAllChecks()"
-          [outlined]="true"
-        />
-      </div>
       }
     </div>
   </div>
-</p-fieldset>
+</div>

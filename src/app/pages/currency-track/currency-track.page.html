@@ -17,4 +17,42 @@
       <app-cash-accordion />
     </p-accordion-content>
   </p-accordion-panel>
+
+  <p-accordion-panel value="1" styleClass="">
+    <p-accordion-header>
+      <ng-template #toggleicon let-active="active">
+        @if (active) {
+        <i class="pi pi-minus"></i>
+        } @else {
+        <i class="pi pi-plus"></i>
+        }
+      </ng-template>
+
+      <div class="font-bold tracking-wide">
+        <span class="flex items-center gap-2 w-full font-mono"> Cheques</span>
+      </div>
+    </p-accordion-header>
+    <p-accordion-content>
+      <app-checks-accordion />
+    </p-accordion-content>
+  </p-accordion-panel>
+
+  <p-accordion-panel value="2" styleClass="">
+    <p-accordion-header>
+      <ng-template #toggleicon let-active="active">
+        @if (active) {
+        <i class="pi pi-minus"></i>
+        } @else {
+        <i class="pi pi-plus"></i>
+        }
+      </ng-template>
+
+      <div class="font-bold tracking-wide">
+        <span class="flex items-center gap-2 w-full font-mono"> Resumen</span>
+      </div>
+    </p-accordion-header>
+    <p-accordion-content>
+      <app-summary-card />
+    </p-accordion-content>
+  </p-accordion-panel>
 </p-accordion>
