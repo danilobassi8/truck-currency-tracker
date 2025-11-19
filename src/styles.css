@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./tailwind.css";
+@import "primeicons/primeicons.css";
+
+html {
+  background-color: var(--p-surface-100);
+  &.dark {
+    background-color: var(--p-surface-950);
+  }
+
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}

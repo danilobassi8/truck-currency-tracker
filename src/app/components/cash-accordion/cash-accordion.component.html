@@ -1,0 +1,113 @@
+<p-accordion class="w-full">
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <div class="flex justify-between items-center w-full pr-4">
+        <span class="font-semibold text-lg">Cash</span>
+        <p-chip
+          [label]="'$' + currencyTracker.totalCash()"
+          styleClass="bg-green-100 text-green-800"
+        />
+      </div>
+    </ng-template>
+
+    <!-- Add Bills Form -->
+    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium mb-4">Add Bills</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <p-dropdown
+          [options]="denominationOptions"
+          [(ngModel)]="selectedDenomination"
+          [disabled]="currencyTracker.availableDenominations().length === 0"
+          placeholder="Select denomination"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="w-full"
+        />
+
+        <p-inputNumber
+          [(ngModel)]="billCount"
+          [min]="1"
+          [disabled]="selectedDenomination === 0"
+          placeholder="Count"
+          styleClass="w-full"
+        />
+
+        <p-button
+          label="Add Bills"
+          icon="pi pi-plus"
+          (onClick)="addBills()"
+          [disabled]="selectedDenomination === 0 || (billCount || 0) < 1"
+          styleClass="w-full"
+        />
+      </div>
+
+      @if (currencyTracker.availableDenominations().length === 0) {
+        <div class="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-md">
+          <p class="text-yellow-800 text-sm">
+            All bill denominations are in use. Update existing ones below.
+          </p>
+        </div>
+      }
+    </div>
+
+    <!-- Current Bills -->
+    <div class="space-y-4">
+      <h3 class="text-lg font-medium">Current Bills</h3>
+
+      @if (currencyTracker.bills().length === 0) {
+        <div class="text-center py-8 text-gray-500">
+          <i class="pi pi-money-bill text-4xl mb-2"></i>
+          <p>No bills added yet</p>
+        </div>
+      }
+
+      @for (bill of currencyTracker.bills(); track bill.denomination) {
+        <p-card styleClass="mb-3">
+          <div class="flex justify-between items-center">
+            <div class="flex-1">
+              <span class="text-lg font-semibold">${{ bill.denomination }} × {{ bill.count }}</span>
+            </div>
+            <div class="flex-1 text-center">
+              <p-chip
+                [label]="'$' + (bill.denomination * bill.count)"
+                styleClass="bg-green-100 text-green-800"
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <p-inputNumber
+                [ngModel]="bill.count"
+                [min]="0"
+                (onInput)="updateBillCount(bill.denomination, +($event.value || 0))"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                spinnerMode="horizontal"
+                styleClass="w-24"
+              />
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                size="small"
+                (onClick)="removeBillType(bill.denomination)"
+                [text]="true"
+              />
+            </div>
+          </div>
+        </p-card>
+      }
+
+      @if (currencyTracker.bills().length > 0) {
+        <div class="flex justify-end mt-4">
+          <p-button
+            label="Clear All Bills"
+            icon="pi pi-trash"
+            severity="warn"
+            size="small"
+            (onClick)="clearAllBills()"
+            [outlined]="true"
+          />
+        </div>
+      }
+    </div>
+  </p-accordionTab>
+</p-accordion>

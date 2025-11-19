@@ -1,0 +1,53 @@
+<div styleClass="mt-6">
+  <ng-template pTemplate="header">
+    <div class="text-center py-4">
+      <h2 class="text-2xl font-bold text-gray-800">Summary</h2>
+    </div>
+  </ng-template>
+
+  <div class="space-y-4">
+    <!-- Individual Totals -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
+        <span class="text-lg font-medium text-green-800">Total Cash:</span>
+        <p-chip
+          [label]="'$' + currencyTracker.totalCash()"
+          styleClass="bg-green-600 text-white text-lg px-4 py-2"
+        />
+      </div>
+
+      <div class="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
+        <span class="text-lg font-medium text-purple-800">Total Checks:</span>
+        <p-chip
+          [label]="'$' + currencyTracker.totalChecks()"
+          styleClass="bg-purple-600 text-white text-lg px-4 py-2"
+        />
+      </div>
+    </div>
+
+    <p-divider />
+
+    <!-- Grand Total -->
+    <div class="text-center p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg text-white">
+      <div class="text-xl font-medium mb-2">Grand Total</div>
+      <div class="text-4xl font-bold">
+        ${{ currencyTracker.totalCash() + currencyTracker.totalChecks() }}
+      </div>
+    </div>
+
+    <!-- Clear All Button -->
+    @if (currencyTracker.bills().length > 0 || currencyTracker.checks().length > 0) {
+      <div class="text-center mt-6">
+        <p-button
+          label="Clear Everything"
+          icon="pi pi-trash"
+          severity="danger"
+          size="large"
+          (onClick)="clearAll()"
+          [outlined]="true"
+          styleClass="px-8"
+        />
+      </div>
+    }
+  </div>
+</div>
