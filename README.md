@@ -1,59 +1,24 @@
-# TruckCurrenyTracker
+# Truck Currency Tracker
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.4.
+A minimalist web application developed in one afternoon to help truck drivers register and track cash and checks quickly and efficiently.
 
-## Development server
+## Context
 
-To start a local development server, run:
+This application emerged as a practical solution for a truck driver who needed to keep detailed records of the money they were transporting. The requirements were simple but specific: count bills by denomination, register checks, and have a total summary, all from mobile.
 
-```bash
-ng serve
-```
+## Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Angular 19** - Main framework
+- **PrimeNG** - UI components
+- **Tailwind CSS** - Utility styles
+- **SweetAlert2** - Alerts and confirmations
+- **GitHub Pages** - Automatic deployment
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+## Notes
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Data is saved locally in the browser
+- View optimized for mobile devices
+- No backend required - works completely offline
+---
