@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG} from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -11,6 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
     provideRouter(routes),
+    { provide: LOCALE_ID, useValue: 'es-AR' },
     providePrimeNG({
       ripple: true,
       theme: {

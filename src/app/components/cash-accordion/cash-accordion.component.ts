@@ -11,6 +11,7 @@ import { CurrencyTrackerService } from '../../services/currency-tracker.service'
 import { AccordionModule } from 'primeng/accordion';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-cash-accordion',
@@ -38,13 +39,16 @@ export class CashAccordionComponent {
   // Dropdown options for denominations
   denominationOptions: { label: string; value: number }[] = [];
 
-  constructor(public currencyTracker: CurrencyTrackerService) {
+  constructor(
+    public currencyTracker: CurrencyTrackerService,
+    private alertService: AlertService
+  ) {
     // Update denomination options when available denominations change
     effect(() => {
       this.denominationOptions = this.currencyTracker
         .availableDenominations()
         .map((denom) => ({
-          label: `$${denom}`,
+          label: `${denom.toLocaleString('es-AR')}`,
           value: denom,
         }));
 
@@ -88,12 +92,34 @@ export class CashAccordionComponent {
     }
   }
 
-  removeBillType(denomination: number): void {
-    this.currencyTracker.removeBillType(denomination);
+  async removeBillType(denomination: number): Promise<void> {
+    const confirmed = await this.alertService.confirmDelete(
+      '¿Estás seguro?',
+      `¿Quieres eliminar los billetes de $${denomination.toLocaleString('es-AR')}?`
+    );
+
+    if (confirmed) {
+      this.currencyTracker.removeBillType(denomination);
+      this.alertService.showSuccess(
+        '¡Eliminado!',
+        'Los billetes han sido eliminados.'
+      );
+    }
   }
 
-  clearAllBills(): void {
-    this.currencyTracker.clearBills();
+  async clearAllBills(): Promise<void> {
+    const confirmed = await this.alertService.confirmDelete(
+      '¿Estás seguro?',
+      '¿Quieres eliminar todo el efectivo? Esta acción no se puede deshacer.'
+    );
+
+    if (confirmed) {
+      this.currencyTracker.clearBills();
+      this.alertService.showSuccess(
+        '¡Eliminado!',
+        'Todo el efectivo ha sido eliminado.'
+      );
+    }
   }
 
   private resetBillForm(): void {

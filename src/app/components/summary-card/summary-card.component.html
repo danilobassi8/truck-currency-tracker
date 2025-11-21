@@ -9,17 +9,17 @@
     <!-- Individual Totals -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
-        <span class="text-lg font-medium text-green-800">Total Cash:</span>
+        <span class="text-lg font-medium text-green-800">Total efectivo:</span>
         <p-chip
-          [label]="'$' + currencyTracker.totalCash()"
+          [label]="'$' + (currencyTracker.totalCash() | number:'1.0-2':'es-AR')"
           styleClass="bg-green-600 text-white text-lg px-4 py-2"
         />
       </div>
 
       <div class="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
-        <span class="text-lg font-medium text-purple-800">Total Checks:</span>
+        <span class="text-lg font-medium text-purple-800">Total cheques:</span>
         <p-chip
-          [label]="'$' + currencyTracker.totalChecks()"
+          [label]="'$' + (currencyTracker.totalChecks() | number:'1.0-2':'es-AR')"
           styleClass="bg-purple-600 text-white text-lg px-4 py-2"
         />
       </div>
@@ -28,10 +28,10 @@
     <p-divider />
 
     <!-- Grand Total -->
-    <div class="text-center p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg text-white">
-      <div class="text-xl font-medium mb-2">Grand Total</div>
+    <div class="text-center p-6 bg-linear-to-r from-blue-500 to-blue-600 rounded-lg text-white">
+      <div class="text-xl font-medium mb-2">Total</div>
       <div class="text-4xl font-bold">
-        ${{ currencyTracker.totalCash() + currencyTracker.totalChecks() }}
+        ${{ (currencyTracker.totalCash() + currencyTracker.totalChecks()) | number:'1.0-2':'es-AR' }}
       </div>
     </div>
 
@@ -39,7 +39,7 @@
     @if (currencyTracker.bills().length > 0 || currencyTracker.checks().length > 0) {
       <div class="text-center mt-6">
         <p-button
-          label="Clear Everything"
+          label="Reiniciar todo"
           icon="pi pi-trash"
           severity="danger"
           size="large"

@@ -1,7 +1,17 @@
 <!-- Add Checks Form -->
 <div class="mb-6 p-4 bg-gray-50 rounded-lg">
   <p-inputgroup>
-    <p-inputNumber [(ngModel)]="checkAmount" placeholder="Monto del cheque" styleClass="min-w-[55%]" />
+    <p-inputNumber
+      [(ngModel)]="checkAmount"
+      placeholder="Monto del cheque"
+      styleClass="min-w-[55%]"
+      [min]="0.01"
+      [step]="0.01"
+      mode="decimal"
+      [minFractionDigits]="0"
+      [maxFractionDigits]="2"
+      locale="es-AR"
+    />
 
     <p-inputgroup-addon>
       <div class="flex h-full items-stretch">
@@ -15,7 +25,9 @@
   <div class="mt-5">
     @for (check of currencyTracker.checks(); track check.id) {
       <div class="flex items-center gap-2 py-2">
-        <div class="flex-1 p-3 bg-gray-100 rounded border text-lg font-semibold">${{ check.amount.toFixed(2) }}</div>
+        <div class="flex-1 p-3 bg-gray-100 rounded border text-lg font-semibold">
+          ${{ check.amount | number:'1.0-2':'es-AR' }}
+        </div>
 
         <p-button severity="danger" styleClass="flex" (onClick)="removeCheck(check.id)">
           <i class="pi pi-trash h-[22px] pt-0.5"></i>

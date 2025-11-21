@@ -5,6 +5,7 @@ import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { CurrencyTrackerService } from '../../services/currency-tracker.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-summary-card',
@@ -20,11 +21,28 @@ import { CurrencyTrackerService } from '../../services/currency-tracker.service'
   styles: []
 })
 export class SummaryCardComponent {
-  constructor(public currencyTracker: CurrencyTrackerService) {}
+  constructor(
+    public currencyTracker: CurrencyTrackerService,
+    private alertService: AlertService
+  ) {}
 
-  clearAll(): void {
-    if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+  async clearAll(): Promise<void> {
+    const confirmed = await this.alertService.confirmDelete(
+      '¿Estás seguro?',
+      '¿Quieres eliminar TODOS los datos? Esto borra todo el efectivo y todos los cheques.',
+      {
+        confirmButtonText: 'Sí, eliminar todo',
+        cancelButtonText: 'Cancelar'
+      }
+    );
+
+    if (confirmed) {
       this.currencyTracker.clearAll();
+      this.alertService.showSuccess(
+        '¡Eliminado!',
+        'Se han reiniciado todos los datos.',
+        2000
+      );
     }
   }
 }
