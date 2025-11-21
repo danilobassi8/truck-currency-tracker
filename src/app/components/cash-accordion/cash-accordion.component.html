@@ -1,18 +1,18 @@
 <!-- Add Bills Form -->
 <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-  @if (currencyTracker.availableDenominations().length !== 0) {
-    <p-inputgroup>
-      <p-dropdown
-        [options]="denominationOptions"
-        [(ngModel)]="selectedDenomination"
-        [disabled]="currencyTracker.availableDenominations().length === 0"
-        placeholder="Denominación"
-        optionLabel="label"
-        optionValue="value"
-        styleClass="min-w-[55%]"
-        appendTo="body"
-        panelStyleClass="min-w-[150px]"
-      />
+  <h3 class="text-lg font-medium mb-4">Billetes</h3>
+
+  <p-inputgroup>
+    <p-dropdown
+      [options]="denominationOptions"
+      [(ngModel)]="selectedDenomination"
+      placeholder="Denominación"
+      optionLabel="label"
+      optionValue="value"
+      styleClass="min-w-[55%]"
+      appendTo="body"
+      panelStyleClass="min-w-[150px]"
+    />
 
       <p-inputNumber [(ngModel)]="billCount" [min]="1" [disabled]="selectedDenomination === 0" placeholder="cantidad" />
 
@@ -24,7 +24,6 @@
         </div>
       </p-inputgroup-addon>
     </p-inputgroup>
-  }
 
   <div class="mt-5">
     @for (bill of currencyTracker.bills(); track bill.denomination) {
