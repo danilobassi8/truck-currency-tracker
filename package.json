@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:gh-pages": "ng build --configuration production --base-href /truck-currency-tracker/",
+    "build:gh-pages": "ng build --base-href https://danilobassi8.github.io/truck-currency-tracker/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
