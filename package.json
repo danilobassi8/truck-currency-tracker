@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:gh-pages": "ng build --base-href https://danilobassi8.github.io/truck-currency-tracker/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -34,6 +33,7 @@
     "@angular/cli": "^19.2.4",
     "@angular/compiler-cli": "^19.2.0",
     "@types/jasmine": "~5.1.0",
+    "angular-cli-ghpages": "^2.0.3",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-unused-imports": "^4.3.0",
     "jasmine-core": "~5.6.0",
