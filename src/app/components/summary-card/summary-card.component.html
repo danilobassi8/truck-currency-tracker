@@ -1,37 +1,94 @@
 <div styleClass="mt-6">
   <ng-template pTemplate="header">
     <div class="text-center py-4">
-      <h2 class="text-2xl font-bold text-gray-800">Summary</h2>
+      <h2 class="text-2xl font-bold text-gray-800">Resumen Detallado</h2>
     </div>
   </ng-template>
 
-  <div class="space-y-4">
-    <!-- Individual Totals -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
-        <span class="text-lg font-medium text-green-800">Total efectivo:</span>
-        <p-chip
-          [label]="'$' + (currencyTracker.totalCash() | number:'1.0-2':'es-AR')"
-          styleClass="bg-green-600 text-white text-lg px-4 py-2"
-        />
-      </div>
+  <div class="space-y-6 p-4">
+    <!-- Efectivo Detallado -->
+    <div class="bg-green-50 rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-green-800 mb-4">Efectivo:</h3>
 
-      <div class="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
-        <span class="text-lg font-medium text-purple-800">Total cheques:</span>
-        <p-chip
-          [label]="'$' + (currencyTracker.totalChecks() | number:'1.0-2':'es-AR')"
-          styleClass="bg-purple-600 text-white text-lg px-4 py-2"
-        />
-      </div>
+      @if (currencyTracker.bills().length > 0) {
+        <div class="overflow-hidden rounded-lg">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-green-100/50">
+                <th class="text-left py-2 font-medium text-green-800 border-b border-green-200/50">
+                  Detalle
+                </th>
+                <th class="text-left py-2 font-medium text-green-800 border-b border-green-200/50">Cant.</th>
+                <th class="text-right py-2 font-medium text-green-800 border-b border-green-200/50">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (bill of currencyTracker.bills(); track bill.denomination) {
+                <tr class="hover:bg-green-100/30 border-b border-green-200/30">
+                    <td class="py-2 font-mono text-sm">${{ bill.denomination | number: '1.0-2' : 'es-AR' }}</td>
+                  <td class="py-2 font-mono text-sm">x {{ bill.count }} </td>
+                  <td class="py-2 font-mono text-sm text-right font-semibold">
+                    <span class="float-start">=</span> ${{ bill.count * bill.denomination | number: '1.0-2' : 'es-AR' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="border-t border-green-200 mt-3 pt-3">
+          <div class="flex justify-between items-center font-semibold">
+            <span>Total efectivo:</span>
+            <span class="text-lg">${{ currencyTracker.totalCash() | number: '1.0-2' : 'es-AR' }}</span>
+          </div>
+        </div>
+      } @else {
+        <p class="text-gray-500 italic">No hay billetes registrados</p>
+      }
     </div>
 
-    <p-divider />
+    <!-- Cheques Detallados -->
+    <div class="bg-purple-50 rounded-lg p-4">
+      <h3 class="text-lg font-semibold text-purple-800 mb-4">Cheques:</h3>
 
-    <!-- Grand Total -->
-    <div class="text-center p-6 bg-linear-to-r from-blue-500 to-blue-600 rounded-lg text-white">
-      <div class="text-xl font-medium mb-2">Total</div>
+      @if (currencyTracker.checks().length > 0) {
+        <div class="overflow-hidden rounded-lg">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-purple-100/50">
+                <th class="text-left py-2 px-3 font-medium text-purple-800 border-b border-purple-200/50">Número</th>
+                <th class="text-right py-2 px-3 font-medium text-purple-800 border-b border-purple-200/50">Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (check of currencyTracker.checks(); track check.id; let i = $index) {
+                <tr class="hover:bg-purple-100/30 border-b border-purple-200/30">
+                  <td class="py-2 px-3 font-mono text-sm">Cheque {{ i + 1 }}</td>
+                  <td class="py-2 px-3 font-mono text-sm text-right font-semibold">
+                    ${{ check.amount | number: '1.0-2' : 'es-AR' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="border-t border-purple-200 mt-3 pt-3">
+          <div class="flex justify-between items-center font-semibold">
+            <span>Total cheques:</span>
+            <span class="text-lg">${{ currencyTracker.totalChecks() | number: '1.0-2' : 'es-AR' }}</span>
+          </div>
+        </div>
+      } @else {
+        <p class="text-gray-500 italic">No hay cheques registrados</p>
+      }
+    </div>
+
+    <!-- Gran Total -->
+    <div class="bg-blue-600 rounded-lg p-6 text-white text-center">
+      <div class="text-xl font-medium mb-2">TOTAL GENERAL</div>
       <div class="text-4xl font-bold">
-        ${{ (currencyTracker.totalCash() + currencyTracker.totalChecks()) | number:'1.0-2':'es-AR' }}
+        ${{ currencyTracker.totalCash() + currencyTracker.totalChecks() | number: '1.0-2' : 'es-AR' }}
       </div>
     </div>
 
